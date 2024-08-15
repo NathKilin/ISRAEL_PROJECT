@@ -13,25 +13,41 @@ const port = 3000;
            encrypt: false, // Use true if you are connecting to Azure SQL Database
            enableArithAbort: true
        },
-       // Use integrated security (Windows Authentication)!!!
+    // For Windows 
+    // Use integrated security (Windows Authentication)!!!
+    //    authentication: {
+    //        type: 'ntlm',
+    //        options: {
+    //            domain: process.env.DB_DOMAIN,  // Only necessary if your SQL Server is in a domain
+    //            userName: process.env.DB_USER,  // Optional: Specify if not using the logged-in user
+    //            password: process.env.DB_PASSWORD   // Optional: Specify if not using the logged-in user
+    //        }
+    //    }
+    //
+    // ************* For Mac **************
+    // Use integrated security (Mac user and password)!!!
        authentication: {
-           type: 'ntlm',
-           options: {
-               domain: process.env.DB_DOMAIN,  // Only necessary if your SQL Server is in a domain
-               userName: process.env.DB_USER,  // Optional: Specify if not using the logged-in user
-               password: process.env.DB_PASSWORD   // Optional: Specify if not using the logged-in user
-           }
-       }
+        type: 'default',  // Use 'default' for SQL Server Authentication
+        options: {
+            userName: process.env.DB_USER,
+            password: process.env.DB_PASSWORD
+        }
+    }
    };
 
 // Route to get data
 app.get('/data', async (req, res) => {
     try {
-        // Connect to the database
-        await sql.connect(dbConfig);
+        sql.connect(dbConfig)
+        .then(() => {
+            console.log('Connected successfully!');
+        })
+        .catch(err => {
+            console.error('Connection failed:', err);
+        });
 
         // Query the database
-        const result = await sql.query('SELECT * FROM YourTableName');
+        const result = await sql.query('SELECT * FROM Orders');
 
         // Send the results as JSON
         res.json(result.recordset);
