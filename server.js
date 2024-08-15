@@ -6,16 +6,23 @@ const app = express();
 const port = 3000;
 
 // Database configuration
-const dbConfig = {
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    server: process.env.DB_SERVER, 
-    database: process.env.DB_DATABASE,
-    options: {
-        encrypt: false, // Use true for Azure SQL, for local SQL Server set to false
-        trustServerCertificate: true, // Required for local connections
-    },
-};
+   const dbConfig = {
+       server: process.env.DB_SERVER,
+       database: process.env.DB_DATABASE,
+       options: {
+           encrypt: false, // Use true if you are connecting to Azure SQL Database
+           enableArithAbort: true
+       },
+       // Use integrated security (Windows Authentication)!!!
+       authentication: {
+           type: 'ntlm',
+           options: {
+               domain: process.env.DB_DOMAIN,  // Only necessary if your SQL Server is in a domain
+               userName: process.env.DB_USER,  // Optional: Specify if not using the logged-in user
+               password: process.env.DB_PASSWORD   // Optional: Specify if not using the logged-in user
+           }
+       }
+   };
 
 // Route to get data
 app.get('/data', async (req, res) => {
