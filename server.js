@@ -6,34 +6,22 @@ const app = express();
 const port = 3000;
 
 // Database configuration
-   const dbConfig = {
-       server: process.env.DB_SERVER,
-       database: process.env.DB_DATABASE,
-       options: {
-           encrypt: false, // Use true if you are connecting to Azure SQL Database
-           enableArithAbort: true
-       },
-    // For Windows 
-    // Use integrated security (Windows Authentication)!!!
-    //    authentication: {
-    //        type: 'ntlm',
-    //        options: {
-    //            domain: process.env.DB_DOMAIN,  // Only necessary if your SQL Server is in a domain
-    //            userName: process.env.DB_USER,  // Optional: Specify if not using the logged-in user
-    //            password: process.env.DB_PASSWORD   // Optional: Specify if not using the logged-in user
-    //        }
-    //    }
-    //
-    // ************* For Mac **************
-    // Use integrated security (Mac user and password)!!!
-       authentication: {
-        type: 'default',  // Use 'default' for SQL Server Authentication
-        options: {
-            userName: process.env.DB_USER,
-            password: process.env.DB_PASSWORD
-        }
-    }
-   };
+const dbConfig = {
+    server: process.env.DB_SERVER,
+    database: process.env.DB_DATABASE,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    pool: {
+        max: 10,
+        min: 0,
+        idleTimeoutMillis: 30000,
+        },
+    options: {
+        trustServerCertificate: true, // Bypass SSL certificate validation
+        trustedConnection: true,
+        connectTimeout: 30000, // Increase connection timeout to 30 seconds
+    },
+  };
 
 // Route to get data
 app.get('/data', async (req, res) => {
