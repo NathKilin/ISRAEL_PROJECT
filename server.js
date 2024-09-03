@@ -26,19 +26,28 @@ const dbConfig = {
 // Route to get data
 app.get('/data', async (req, res) => {
     try {
-        sql.connect(dbConfig)
-        .then(() => {
-            console.log('Connected successfully!');
-        })
-        .catch(err => {
-            console.error('Connection failed:', err);
-        });
+        // Connect to the database
+        // await sql.connect(dbConfig);
 
         // Query the database
-        const result = await sql.query('SELECT * FROM Orders');
+        // const result = await sql.query('SELECT * FROM YourTableName');
 
-        // Send the results as JSON
-        res.json(result.recordset);
+        let headers =  { "Content-Type"	: "application/json", "Accept": "application/json"}
+        const data = {      
+                "username" : process.env.USER,
+                "password" : process.env.PASSWORD      
+        };
+
+        //Send Auth request using Axios
+        const response = await axios.post('https://restful-booker.herokuapp.com/auth', data, headers);
+
+        res.json({
+            message: 'Data successfully sent via Axios',
+            data: response.data
+        });
+
+        //Send the results as JSON
+        // res.json(result.recordset);
     } catch (err) {
         console.error('SQL error', err);
         res.status(500).send('Server Error');
