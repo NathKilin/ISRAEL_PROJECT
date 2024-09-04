@@ -1,5 +1,4 @@
 const request = require('supertest');
-const express = require('express');
 const app = require('../server.js'); // Adjust this path to point to your Express app
 
 describe('GET /data', () => {
@@ -7,13 +6,30 @@ describe('GET /data', () => {
         const response = await request(app).get('/data');
         expect(response.statusCode).toBe(200);
         expect(response.body).toBeDefined();
+        
+        // expect(response.body.token).toBeDefined();
+
     });
 
     it('should respond with status code 200', async () => {
         const response = await request(app).get('/data');
         expect(response.statusCode).toBe(200);
     });
+    
 });
+
+describe('add', () => {
+    test('return success', () => {
+        expect(app.add()).toBe('success');
+    });
+});
+
+describe('sum', () => {
+    test('sum two positive numbers', () => {
+        expect(app.sum(1,3)).toBe(4);
+    });
+});
+
 
 
 // // describe('POST /data', () => {
