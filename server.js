@@ -1,11 +1,11 @@
 const express = require('express');
 const sql = require('mssql');
+const axios = require('axios'); 
 require('dotenv').config();
 
 const app = express();
 const port = 3000;
 
-// Database configuration
 const dbConfig = {
     server: process.env.DB_SERVER,
     database: process.env.DB_DATABASE,
@@ -22,6 +22,11 @@ const dbConfig = {
         connectTimeout: 30000, // Increase connection timeout to 30 seconds
     },
   };
+app.add = function() {return 'success'};
+
+app.sum = (a,b) =>{
+    return a + b;
+}
 
 // Route to get data
 app.get('/data', async (req, res) => {
@@ -32,15 +37,15 @@ app.get('/data', async (req, res) => {
         // Query the database
         // const result = await sql.query('SELECT * FROM YourTableName');
 
-        let headers =  { "Content-Type"	: "application/json", "Accept": "application/json"}
+        let headers =  { "Content-Type"	: "application/json", "Accept": "*/*"}
         const data = {      
-                "username" : process.env.USER,
-                "password" : process.env.PASSWORD      
+                username : "admin",
+                password: "password123"      
         };
 
         //Send Auth request using Axios
         const response = await axios.post('https://restful-booker.herokuapp.com/auth', data, headers);
-
+        
         res.json({
             message: 'Data successfully sent via Axios',
             data: response.data
@@ -58,3 +63,6 @@ app.get('/data', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+
+module.exports = app;
+
