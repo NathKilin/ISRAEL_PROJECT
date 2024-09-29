@@ -4,7 +4,7 @@ const axios = require('axios');
 require('dotenv').config();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const dbConfig = {
     server: process.env.DB_SERVER,
@@ -15,54 +15,36 @@ const dbConfig = {
         max: 10,
         min: 0,
         idleTimeoutMillis: 30000,
-        },
-    options: {
-        trustServerCertificate: true, // Bypass SSL certificate validation
-        trustedConnection: true,
-        connectTimeout: 30000, // Increase connection timeout to 30 seconds
     },
-  };
-app.add = function() {return 'success'};
+    options: {
+        trustServerCertificate: true,
+        trustedConnection: true,
+        connectTimeout: 30000,
+    },
+};
 
-app.sum = (a,b) =>{
-    return a + b;
-}
+app.add = function() { return 'success'; };
+app.sum = (a, b) => a + b;
 
 // Route to get data
 app.get('/data', async (req, res) => {
     try {
-        // Connect to the database
-        // await sql.connect(dbConfig);
+        const headers = { "Content-Type": "application/json", "Accept": "*/*" };
+        const data = { username: "admin", password: "password123" };
 
-        // Query the database
-        // const result = await sql.query('SELECT * FROM YourTableName');
-
-        let headers =  { "Content-Type"	: "application/json", "Accept": "*/*"}
-        const data = {      
-                username : "admin",
-                password: "password123"      
-        };
-
-        //Send Auth request using Axios
         const response = await axios.post('https://restful-booker.herokuapp.com/auth', data, headers);
-        
-        res.json({
-            message: 'Data successfully sent via Axios',
-            data: response.data
-        });
-
-        //Send the results as JSON
-        // res.json(result.recordset);
+        res.json({ message: 'Data successfully sent via Axios', data: response.data });
     } catch (err) {
         console.error('SQL error', err);
         res.status(500).send('Server Error');
     }
 });
 
-// Start the server
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
+// Start the server only if this file is run directly (not in tests)
+if (require.main === module) {
+    app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+    });
+}
 
 module.exports = app;
-
