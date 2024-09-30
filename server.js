@@ -40,6 +40,25 @@ app.get('/data', async (req, res) => {
     }
 });
 
+// Route to get products
+app.get('/products', async (req, res) => {
+    try {
+        const response = await axios.get('https://simple-grocery-store-api.glitch.me/products');
+        res.json({
+            message: 'Data successfully sent via Axios',
+            data: response.data,
+        });
+    } catch (err) {
+        console.error('Error fetching products', err);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Route to respond to the root URL
+app.get('/', (req, res) => {
+    res.send('Welcome to the API');
+});
+
 // Start the server only if this file is run directly (not in tests)
 if (require.main === module) {
     app.listen(port, () => {
