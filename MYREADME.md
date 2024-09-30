@@ -1,4 +1,4 @@
-<!-- ## Implemented and Tested Routes
+## Implemented and Tested Routes
 
 Here is a list of the routes that have been implemented and tested:
 
@@ -22,7 +22,7 @@ Here is a list of the routes that have been implemented and tested:
     }
     ```
 
-- **GET /products/:id**
+<!-- - **GET /products/:id**
   - Fetches a specific product based on the provided ID.
   - Example usage:
     ```
