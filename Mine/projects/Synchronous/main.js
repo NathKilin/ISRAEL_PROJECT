@@ -37,3 +37,23 @@
 ///////////////////////////////////////////////////
 
 //5. Correcting Loop with setTimeout and Closure
+
+// for (let i = 1; i <= 3; i++){
+//     (function (i) {
+//         setTimeout(function() {
+//             console.log(i);
+//         }, i *1000)
+//     })(i)
+// }
+
+///////////////////////////////////////////////////
+
+//6. Synchronous Blocking Example
+
+console.log('start');
+let now = Date.now();
+let end = now + 4000;
+while (Date.now() < end) {
+}
+console.log('End');
+
