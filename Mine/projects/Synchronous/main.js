@@ -50,10 +50,11 @@
 
 //6. Synchronous Blocking Example
 
-console.log('start');
-let now = Date.now();
-let end = now + 4000;
-while (Date.now() < end) {
-}
-console.log('End');
+// console.log('start');
+// let now = Date.now();
+// let end = now + 3000;
+// while (Date.now() < end) {
+// }
+// console.log('End');
 
+///////////////////////////////////////////////////
