@@ -14,6 +14,7 @@ submitButton.addEventListener('click', () => {
         alert('Please select a rating before submitting');
     }
 });
+//
 
 ratingButtons.forEach(button => {
     button.addEventListener('click', (event) => {
